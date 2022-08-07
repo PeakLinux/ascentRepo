@@ -1,0 +1,16 @@
+{
+	"packages": {
+		"vim": {
+			"vcs": "git",
+			"repo": "https://github.com/vim/vim",
+			"releaseMethod": "tags",
+			"buildSystem": "default"
+		},
+		"linux": {
+			"vcs": "git",
+			"repo": "https://github.com/torvalds/linux",
+			"releaseMethod": "tags",
+			"buildSystem": "default"
+		}
+	}
+}
