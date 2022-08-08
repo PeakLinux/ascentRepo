@@ -1,9 +1,11 @@
+from pydoc import describe
 import git
 from rich import console, progress
 import sys
 import os
 import shutil
 import json
+import argparse
 
 # Credit: https://stackoverflow.com/questions/51045540/python-progress-bar-for-git-clone
 
@@ -90,8 +92,7 @@ class cloneRepo:
 		package = url.split('/')[-1]
 
 		if os.path.isdir(package) and len(os.listdir(package)) != 0:
-			answer = input(
-				f"Repository {package} already exists. Would you like to remove the directory? (Y/n) ")
+			answer = input(f"Repository {package} already exists. Would you like to remove the directory? (Y/n) ")
 			if answer == 'Y' or answer == 'y' or answer == '':
 				shutil.rmtree(package)
 			elif answer == 'n':
@@ -108,11 +109,16 @@ class cloneRepo:
 
 class readJsonFile:
 	def getPackageNames(jsonfile):
-		with open(jsonfile) as f:
-			data = json.load(f)
-			packages = data['packages']
+		try:
+			with open(jsonfile) as f:
+				data = json.load(f)
+				packages = data['packages']
 
-			return packages
+				return packages
+		except FileNotFoundError as err:
+			err = f"{err}".split("'")
+			print(f'File {err[1]} not found. Aborting now')
+			sys.exit(1)
 
 	def getTags(devFile, pubFile):
 		packages = readJsonFile.getPackageNames(devFile)
@@ -151,4 +157,11 @@ class readJsonFile:
 			f.write(json.dumps(pkg, indent=4))
 
 
-readJsonFile.getTags('Utilities/repo-dev.json', 'Utilities/repo-pub.json')
+if __name__ == "__main__":
+	parser = argparse.ArgumentParser(description="Generate repositories for the Ascent Package Manager")
+	parser.add_argument('-d', '--dev', dest="dev", help="Path to repo-dev.json", required=True)
+	parser.add_argument('-p', '--public', dest="pub", help="Path to repo-pub.json", required=True)
+
+	args = parser.parse_args()
+
+	readJsonFile.getTags(args.dev, args.pub)
