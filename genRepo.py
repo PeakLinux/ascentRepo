@@ -1,4 +1,3 @@
-from pydoc import describe
 import git
 from rich import console, progress
 import sys
