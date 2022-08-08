@@ -6,7 +6,7 @@ python -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
 ```
-After installing all required dependencies, run `python genRepo.py <path to repo-dev.json> <path to repo-pub.json>` and let the script take care of the rest
+After installing all required dependencies, run `python genRepo.py -d <path to repo-dev.json> -p <path to repo-pub.json>` and let the script take care of the rest
 
 - The structure of a repo-dev.json file is as follows (you can also look in Utilities/repo-dev.json for a full example):
 ```json
